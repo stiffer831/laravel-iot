@@ -36,3 +36,15 @@ if (!function_exists('registry')) {
         return \App\Library\Registry::get($key, $default);
     }
 }
+
+if (!function_exists('d')) {
+    /**
+     * @return void
+     */
+    function d()
+    {
+        array_map(function ($x) {
+            dump($x);
+        }, func_get_args());
+    }
+}

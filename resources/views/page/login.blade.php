@@ -20,9 +20,16 @@
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">{{__('login.welcome')}}{{ config('app.name') }}</p>
-            <form action="../../index3.html" method="post">
+            @if(session('warning'))
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ session('warning') }}
+                </div>
+            @endif
+            <form action="{{ route('login.submit') }}" method="post" enctype="multipart/form-data">
+                @csrf
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="{{ __('login.username') }}">
+                    <input type="text" name="username" value="{{ old('username') }}" class="form-control" placeholder="{{ __('login.username') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -30,7 +37,8 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="{{ __('login.password') }}">
+                    <input type="password" name="password" class="form-control"
+                           placeholder="{{ __('login.password') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>

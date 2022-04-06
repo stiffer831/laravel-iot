@@ -20,4 +20,14 @@ class LoginController extends Controller
     {
         return view('page.login');
     }
+
+    public function submit(Request $request)
+    {
+        $username = $request->post('username', '');
+        $password = $request->post('password', '');
+        if (!$username || !$password) {
+            $request->session()->flash('warning', __('login.params_empty'));
+            return back()->withInput();
+        }
+    }
 }

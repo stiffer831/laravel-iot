@@ -15,5 +15,6 @@ return [
     'welcome' => '欢迎登录',
     'username' => '用户名',
     'password' => '密码',
-    'submit' => '登录'
+    'submit' => '登录',
+    'params_empty' => '请输入用户名和密码'
 ];

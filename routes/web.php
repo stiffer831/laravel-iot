@@ -16,6 +16,7 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('login', [LoginController::class, 'show'])->name('login.show');
+Route::post('login', [LoginController::class, 'submit'])->name('login.submit');
 
 // Need login.
 Route::middleware(['iot.login'])->group(function () {
