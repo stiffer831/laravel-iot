@@ -32,7 +32,7 @@
                     <input type="text" name="username" value="{{ old('username') }}" class="form-control" placeholder="{{ __('login.username') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-user"></span>
+                            <span class="fas fa-envelope"></span>
                         </div>
                     </div>
                 </div>

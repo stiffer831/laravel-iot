@@ -12,23 +12,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Login;
 use Illuminate\Http\Request;
+use App\Library\ThingsBoard;
 
 class LoginController extends Controller
 {
+    /**
+     * 登录页面展示
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function show(Request $request)
     {
         return view('page.login');
     }
 
+    /**
+     * 登录表单提交
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
     public function submit(Request $request)
     {
-        $username = $request->post('username', '');
-        $password = $request->post('password', '');
-        if (!$username || !$password) {
-            $request->session()->flash('warning', __('login.params_empty'));
+        try {
+            $username = $request->post('username', '');
+            $password = $request->post('password', '');
+            // 验证
+            (new Login())->verify($username, $password);
+            // 跳转
+            return response()->redirectToRoute('dashboard');
+        } catch (\Exception $e) {
+            $request->session()->flash('warning', $e->getMessage());
             return back()->withInput();
         }
-
     }
 }

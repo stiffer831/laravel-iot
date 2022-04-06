@@ -16,7 +16,20 @@ class IotLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        return response()->redirectToRoute('login.show');
+        $token = session('token', null);
+        $refreshToken = session('refresh_token', null);
+        $customer = session('customer', null);
+        $refreshCustomer = session('refresh_customer', null);
+
+        if (empty($token) || empty($refreshToken) || empty($customer) || empty($refreshCustomer)) {
+            return response()->redirectToRoute('login.show');
+        }
+
+        register('token', $token);
+        register('refresh_token', $refreshToken);
+        register('customer', $customer);
+        register('refresh_customer', $refreshCustomer);
+
         return $next($request);
     }
 }
