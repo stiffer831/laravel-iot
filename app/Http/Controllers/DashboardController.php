@@ -18,6 +18,6 @@ class DashboardController extends Controller
 {
     public function show(Request $request)
     {
-        echo 'dashboard';
+        return view('page.dashboard');
     }
 }
