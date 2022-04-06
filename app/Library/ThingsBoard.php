@@ -39,6 +39,14 @@ class ThingsBoard
         return new static();
     }
 
+    /**
+     * 登录获取token
+     *
+     * @param $username
+     * @param $password
+     * @return array|array[]|mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function login($username, $password)
     {
         $uri = $this->baseUri . 'auth/login';
@@ -68,5 +76,19 @@ class ThingsBoard
                 'exception' => json_decode($exceptionResponse, true)
             ];
         }
+    }
+
+    /**
+     * 获取设备信息
+     *
+     * @param $pageSize
+     * @param $page
+     * @param $sortProperty
+     * @param $sortOrder
+     * @return void
+     */
+    public function deviceInfos($pageSize = 10, $page = 0, $sortProperty = 'createdTime', $sortOrder = 'DESC')
+    {
+
     }
 }

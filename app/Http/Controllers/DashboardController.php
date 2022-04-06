@@ -18,6 +18,12 @@ class DashboardController extends Controller
 {
     public function show(Request $request)
     {
+        $this->devices();
         return view('page.dashboard');
+    }
+
+    private function devices()
+    {
+
     }
 }
