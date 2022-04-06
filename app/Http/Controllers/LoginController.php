@@ -29,5 +29,6 @@ class LoginController extends Controller
             $request->session()->flash('warning', __('login.params_empty'));
             return back()->withInput();
         }
+
     }
 }

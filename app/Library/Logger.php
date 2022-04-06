@@ -112,7 +112,7 @@ class Logger
 
     /**
      * @param ...$message
-     * 
+     *
      * @return void
      */
     public function debug(...$message)
