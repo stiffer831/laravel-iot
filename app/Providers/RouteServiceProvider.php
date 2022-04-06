@@ -11,13 +11,20 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
+     * These namespaces are applied to controller routes.
+     * @var string
+     */
+    protected $namespace = 'App\Http\Controllers';
+    protected $apiNamespace = 'App\Http\ApiControllers';
+
+    /**
      * The path to the "home" route for your application.
      *
      * This is used by Laravel authentication to redirect users after login.
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
 
     /**
      * The controller namespace for the application.
@@ -38,15 +45,29 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
+            $this->apiRoutes();
+            $this->webRoutes();
         });
+    }
+
+    protected function webRoutes()
+    {
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Define the 'api' routes for the application
+     *
+     * @return void
+     */
+    protected function apiRoutes()
+    {
+        Route::prefix(config('api.prefix'))
+            ->middleware('api')
+            ->namespace($this->apiNamespace)
+            ->group(base_path('routes/api.php'));
     }
 
     /**
