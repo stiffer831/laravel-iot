@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['iot.login'])->group(function () {
+Route::get('login', [LoginController::class, 'show'])->name('login.show');
 
+// Need login.
+Route::middleware(['iot.login'])->group(function () {
+    // Dashboard
+    Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
 });

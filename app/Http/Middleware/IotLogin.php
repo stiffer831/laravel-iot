@@ -16,6 +16,7 @@ class IotLogin
      */
     public function handle(Request $request, Closure $next)
     {
+        return response()->redirectToRoute('login.show');
         return $next($request);
     }
 }
