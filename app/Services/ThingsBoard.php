@@ -6,49 +6,47 @@
  * @copyright 2022 wkld.com - All Rights Reserved
  * @link https://www.wkld.com
  * @author stiffer.chen <2181867045@qq.com>
- * @created 2022-04-06 14:59:30
- * @modified 2022-04-06 14:59:30
+ * @created 2022-04-07 08:51:40
+ * @modified 2022-04-07 08:51:40
  */
 
-namespace App\Library;
+namespace App\Services;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use App\Library\Logger;
+use App\Library\Registry;
 use GuzzleHttp\Exception\RequestException;
 
 class ThingsBoard
 {
-    protected $registry;
-    protected $client;
-    protected $baseUri;
-    protected $logger;
+    private $registry;
+    private $client;
+    private $baseUri;
+    private $logger;
 
     public function __construct()
     {
         $this->registry = Registry::getInstance();
-        $this->logger = new Logger('things_board');
+        $this->logger = new Logger('thingsboard');
         $this->baseUri = env('API_BASE_URL', '');
         $this->client = new Client([
             'timeout' => 300
         ]);
-        $this->logger->info("Construct ThingsBoard base");
-    }
-
-    public static function getInstance()
-    {
-        return new static();
     }
 
     /**
-     * 登录获取token
-     *
+     * 用户登录
      * @param $username
      * @param $password
      * @return array|array[]|mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function login($username, $password)
     {
+        if (!$this->baseUri) {
+            $this->logger->error('ThingsBoard服务器配置url为空');
+            throw new \Exception('server error.');
+        }
         $uri = $this->baseUri . 'auth/login';
         $params = [
             'username' => $username,
@@ -63,32 +61,20 @@ class ThingsBoard
             $token = $result['token'] ?? '';
             $refreshToken = $result['refreshToken'] ?? '';
             if (!$token || !$refreshToken) {
-                return [
-                    'exception' => [
-                        'message' => __('login.invalid_token')
-                    ]
-                ];
+                throw new \Exception(__('login.invalid_token'));
             }
             return $result;
         } catch (RequestException $e) {
             $exceptionResponse = $e->getResponse()->getBody()->getContents();
-            return [
-                'exception' => json_decode($exceptionResponse, true)
-            ];
+            // log exception
+            $this->logger->error($exceptionResponse);
+            $exceptionArr = json_decode($exceptionResponse, true);
+            $exceptionStatus = $exceptionArr['status'] ?? '';
+            $exceptionMessage = $exceptionArr['message'] ?? '';
+            if ($exceptionStatus) {
+                $exceptionMessage = "({$exceptionStatus}) " . $exceptionMessage;
+            }
+            throw new \Exception($exceptionMessage);
         }
-    }
-
-    /**
-     * 获取设备信息
-     *
-     * @param $pageSize
-     * @param $page
-     * @param $sortProperty
-     * @param $sortOrder
-     * @return void
-     */
-    public function deviceInfos($pageSize = 10, $page = 0, $sortProperty = 'createdTime', $sortOrder = 'DESC')
-    {
-
     }
 }

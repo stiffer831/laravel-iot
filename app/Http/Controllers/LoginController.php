@@ -41,7 +41,7 @@ class LoginController extends Controller
             $username = $request->post('username', '');
             $password = $request->post('password', '');
             // 验证
-            (new Login())->verify($username, $password);
+            (new Login())->verify((string)$username, (string)$password);
             // 跳转
             return response()->redirectToRoute('dashboard');
         } catch (\Exception $e) {

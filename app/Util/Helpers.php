@@ -48,3 +48,16 @@ if (!function_exists('d')) {
         }, func_get_args());
     }
 }
+
+if (!function_exists('parse_jwt')) {
+    /**
+     * 解析jwt
+     *
+     * @param string $jwt
+     * @return mixed
+     */
+    function parse_jwt(string $jwt)
+    {
+        return json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $jwt)[1]))));
+    }
+}

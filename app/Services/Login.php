@@ -12,20 +12,13 @@
 
 namespace App\Services;
 
-use App\Library\ThingsBoard;
-use Firebase\JWT\JWT;
-use Illuminate\Http\Request;
-
 class Login
 {
     /**
      * 登录验证，成功则存入registry, 否则抛出异常
-     *
      * @param string $username
      * @param string $password
-     *
      * @return \Illuminate\Http\RedirectResponse|void
-     *
      * @throws \Exception
      */
     public function verify(string $username, string $password)
@@ -33,23 +26,11 @@ class Login
         if (!$username || !$password) {
             throw new \Exception(__('login.params_empty'));
         }
-
-        $loginResult = ThingsBoard::getInstance()->login($username, $password);
-        $exception = $loginResult['exception'] ?? [];
-        if ($exception) {
-            $status = $exception['status'] ?? '';
-            $statusMessage = '';
-            if ($status) {
-                $statusMessage = "(#{$status}) ";
-            }
-            $message = $statusMessage . $exception['message'] ?? '';
-            throw new \Exception($message);
-        }
+        $loginResult = (new ThingsBoard())->login($username, $password);
         $token = $loginResult['token'] ?? [];
         $refreshToken = $loginResult['refreshToken'] ?? '';
-        $customer = $this->parseJwtToken($token);
-        $refreshCustomer = $this->parseJwtToken($refreshToken);
-
+        $customer = parse_jwt($token);
+        $refreshCustomer = parse_jwt($refreshToken);
         $customerInfo = [
             'token' => $token,
             'refresh_token' => $refreshToken,
@@ -57,16 +38,5 @@ class Login
             'refresh_customer' => $refreshCustomer
         ];
         session()->put('customer_info', $customerInfo);
-    }
-
-    /**
-     * 解析jwt 为 object
-     *
-     * @param $token
-     * @return mixed
-     */
-    private function parseJwtToken($token)
-    {
-        return json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $token)[1]))));
     }
 }

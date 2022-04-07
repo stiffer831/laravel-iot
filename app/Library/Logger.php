@@ -14,6 +14,8 @@ namespace App\Library;
 
 use Illuminate\Support\Str;
 use Monolog\Logger as MonoLogger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\LineFormatter;
 
 class Logger
 {
@@ -22,7 +24,13 @@ class Logger
     public function __construct($name, $frequently = 'day')
     {
         $this->log = new MonoLogger(Str::camel($name));
-
+        $fileName = $this->getLogName($name, $frequently);
+        $logFile = storage_path('/logs/' . $fileName . '.log');
+        $level = config('app.log_level', MonoLogger::DEBUG);
+        $handler = new StreamHandler($logFile, $level, true, 0777);
+        $lineFormatter = new LineFormatter("[%datetime%] %channel%.%level_name%: %message%\n");
+        $handler->setFormatter($lineFormatter);
+        $this->log->pushHandler($handler);
     }
 
     /**
