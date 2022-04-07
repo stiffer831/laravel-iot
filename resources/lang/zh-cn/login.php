@@ -16,6 +16,7 @@ return [
     'username' => '邮箱地址',
     'password' => '密码',
     'submit' => '登录',
+    'notice' => '用户登录',
     'params_empty' => '请输入用户名和密码',
     'invalid_token' => '操作失败，未正确获取到token'
 ];

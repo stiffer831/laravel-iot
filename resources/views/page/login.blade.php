@@ -7,6 +7,7 @@
   <script src="{{ asset('static/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('static/bootstrap/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('static/js/adminlte.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ asset('static/css/stylesheet.css') }}">
   <link rel="stylesheet" href="{{ asset('static/fontawesome/css/all.min.css') }}">
   <link rel="stylesheet" href="{{ asset('static/icheck-bootstrap/icheck-bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('static/css/adminlte.min.css') }}">
@@ -14,9 +15,12 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
+  <div class="login-logo">
+    <img src="{{ asset('static/img/logo_text.png') }}" alt="{{ config('app.name') }}">
+  </div>
   <div class="card">
     <div class="card-body login-card-body">
-      <img src="{{ asset('static/img/logo_text.png') }}" alt="{{ config('app.name') }}">
+      <p class="login-box-msg">{{ __('login.notice') }}</p>
       @if(session('warning'))
         <div class="alert alert-danger alert-dismissible">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
