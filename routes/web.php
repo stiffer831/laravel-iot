@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,10 +17,17 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('login', [LoginController::class, 'show'])->name('login.show');
+Route::get('logout', [LoginController::class, 'out'])->name('logout');
 Route::post('login', [LoginController::class, 'submit'])->name('login.submit');
 
 // Need login.
 Route::middleware(['iot.login'])->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
+    // Customers
+    Route::name('customer.')
+        ->prefix('customer')
+        ->group(function () {
+            Route::get('profile', [CustomerController::class, 'profile'])->name('profile');
+        });
 });

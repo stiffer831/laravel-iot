@@ -61,3 +61,15 @@ if (!function_exists('parse_jwt')) {
         return json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $jwt)[1]))));
     }
 }
+
+if (!function_exists('customer_info')) {
+    /**
+     * 获取用户信息
+     *
+     * @return array
+     */
+    function customer_info(): array
+    {
+        return \App\Repositories\CustomerRepo::infos();
+    }
+}

@@ -12,7 +12,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Login;
+use App\Services\LoginService;
 use Illuminate\Http\Request;
 use App\Library\ThingsBoard;
 
@@ -30,6 +30,19 @@ class LoginController extends Controller
     }
 
     /**
+     * 退出登录
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function out(Request $request)
+    {
+        $request->session()->forget('customer_info');
+        $request->session()->flash('success', __('login.success_logout'));
+        return response()->redirectToRoute('login.show');
+    }
+
+    /**
      * 登录表单提交
      *
      * @param Request $request
@@ -41,7 +54,7 @@ class LoginController extends Controller
             $username = $request->post('username', '');
             $password = $request->post('password', '');
             // 验证
-            (new Login())->verify((string)$username, (string)$password);
+            (new LoginService())->verify((string)$username, (string)$password);
             // 跳转
             return response()->redirectToRoute('dashboard');
         } catch (\Exception $e) {

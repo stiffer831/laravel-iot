@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ThingsBoard.php
+ * ThingsBoardService.php
  *
  * @copyright 2022 wkld.com - All Rights Reserved
  * @link https://www.wkld.com
@@ -17,12 +17,13 @@ use App\Library\Logger;
 use App\Library\Registry;
 use GuzzleHttp\Exception\ClientException;
 
-class ThingsBoard
+class ThingsBoardService
 {
     private $registry;
     private $client;
     private $baseUri;
     private $logger;
+    private $tokenPrefix = 'Bearer ';
 
     public function __construct()
     {
@@ -94,8 +95,32 @@ class ThingsBoard
         ];
         $queryString = implode("&", $queryArr);
         $uri = $this->baseUri . "customer/{$customerId}/deviceInfos?{$queryString}";
-        $token = "Bearer " . $customerToken;
+        $token = $this->tokenPrefix . $customerToken;
 
+        try {
+            $client = $this->client;
+            $response = $client->get($uri, [
+                'headers' => [
+                    'X-Authorization' => $token
+                ]
+            ]);
+            return json_decode((string)$response->getBody(), true);
+        } catch (ClientException $e) {
+            $this->handleException($e);
+        }
+    }
+
+    /**
+     * 获取用户的授权信息
+     *
+     * @param string $token
+     * @return mixed|void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function authUser(string $token)
+    {
+        $uri = $this->baseUri . 'auth/user';
+        $token = $this->tokenPrefix . $token;
         try {
             $client = $this->client;
             $response = $client->get($uri, [

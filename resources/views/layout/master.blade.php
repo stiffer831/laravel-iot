@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <link rel="stylesheet" href="{{ asset('static/plugins/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('static/plugins/summernote/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('static/css/stylesheet.css') }}">
   @show
   @section('header_js')
 
@@ -29,18 +30,7 @@
   </ul>
   {{-- left end --}}
   {{-- right start --}}
-  <ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-      <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-        <i class="fas fa-expand-arrows-alt"></i>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-        <i class="fas fa-th-large"></i>
-      </a>
-    </li>
-  </ul>
+  @include('share.top_nav')
   {{-- right end --}}
 </nav>
 {{-- top nav start end --}}
@@ -54,30 +44,11 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item menu-open">
-          <a href="#" class="nav-link active">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Dashboard
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="./index.html" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v1</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./index2.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v2</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./index3.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v3</p>
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>{{ __('nav.dashboard') }}</p>
               </a>
             </li>
           </ul>

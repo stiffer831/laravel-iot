@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Login.php
+ * LoginService.php
  *
  * @copyright 2022 wkld.com - All Rights Reserved
  * @link https://www.wkld.com
@@ -12,7 +12,9 @@
 
 namespace App\Services;
 
-class Login
+use App\Repositories\CustomerRepo;
+
+class LoginService
 {
     /**
      * 登录验证，成功则存入registry, 否则抛出异常
@@ -26,16 +28,20 @@ class Login
         if (!$username || !$password) {
             throw new \Exception(__('login.params_empty'));
         }
-        $loginResult = (new ThingsBoard())->login($username, $password);
+        $loginResult = (new ThingsBoardService())->login($username, $password);
         $token = $loginResult['token'] ?? [];
         $refreshToken = $loginResult['refreshToken'] ?? '';
         $customer = parse_jwt($token);
         $refreshCustomer = parse_jwt($refreshToken);
+
+        $authUser = (new ThingsBoardService())->authUser($token);
+        $authUserDetail = CustomerRepo::authInfo((array)$authUser);
         $customerInfo = [
             'token' => $token,
             'refresh_token' => $refreshToken,
             'customer' => $customer,
-            'refresh_customer' => $refreshCustomer
+            'refresh_customer' => $refreshCustomer,
+            'auth_user' => $authUserDetail
         ];
         session()->put('customer_info', $customerInfo);
     }

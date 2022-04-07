@@ -12,7 +12,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ThingsBoard;
+use App\Repositories\CustomerRepo;
+use App\Services\ThingsBoardService;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
