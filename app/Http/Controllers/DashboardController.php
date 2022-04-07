@@ -12,18 +12,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ThingsBoard;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function show(Request $request)
     {
-        $this->devices();
         return view('page.dashboard');
-    }
-
-    private function devices()
-    {
-
     }
 }
