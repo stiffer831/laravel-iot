@@ -49,10 +49,14 @@ class Login
         $refreshToken = $loginResult['refreshToken'] ?? '';
         $customer = $this->parseJwtToken($token);
         $refreshCustomer = $this->parseJwtToken($refreshToken);
-        session()->put('token', $token);
-        session()->put('refresh_token', $refreshToken);
-        session()->put('customer', $customer);
-        session()->put('refresh_customer', $refreshCustomer);
+
+        $customerInfo = [
+            'token' => $token,
+            'refresh_token' => $refreshToken,
+            'customer' => $customer,
+            'refresh_customer' => $refreshCustomer
+        ];
+        session()->put('customer_info', $customerInfo);
     }
 
     /**
