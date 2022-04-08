@@ -4,7 +4,7 @@
   {{-- group devices start --}}
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">{{ __('device.group_title') }}</h3>
+      <h3 class="card-title">{{ __('device.group_title') }}&nbsp;({{ count($device_groups) }})</h3>
     </div>
     <div class="card-body">
       <div class="row">
@@ -26,7 +26,7 @@
   {{-- group asset start --}}
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">{{ __('asset.group_title') }}</h3>
+      <h3 class="card-title">{{ __('asset.group_title') }}&nbsp;({{ count($asset_groups) }})</h3>
     </div>
     <div class="card-body">
       <div class="row">
@@ -48,7 +48,7 @@
   {{-- group dashboard start --}}
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">{{ __('th_dashboard.group_title') }}</h3>
+      <h3 class="card-title">{{ __('th_dashboard.group_title') }}&nbsp;({{ count($dashboard_groups) }})</h3>
     </div>
     <div class="card-body">
       <div class="row">
