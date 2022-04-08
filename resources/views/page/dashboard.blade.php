@@ -45,4 +45,26 @@
     </div>
   </div>
   {{-- group asset end --}}
+  {{-- group dashboard start --}}
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ __('th_dashboard.group_title') }}</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        @foreach($dashboard_groups as $dashboard_group)
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">{{ $dashboard_group['name'] }}</span>
+                <span class="info-box-number">{{ $dashboard_group['createdTime'] }}</span>
+              </div>
+            </div>
+          </div>
+        @endforeach
+      </div>
+    </div>
+  </div>
+  {{-- group dashboard end --}}
 @endsection

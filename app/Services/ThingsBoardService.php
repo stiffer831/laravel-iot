@@ -31,6 +31,8 @@ class ThingsBoardService
     private $entityDeviceGroup = null;
     // 资产分组信息
     private $entityAssetGroups = null;
+    // 数据中台(看板信息)
+    private $entityDashboardGroups = null;
     // 设备列表
     private $deviceInfos = [];
 
@@ -176,6 +178,26 @@ class ThingsBoardService
         ];
         $this->entityAssetGroups = $this->handleRequestGet($uri, $headers);
         return $this->entityAssetGroups;
+    }
+
+    /**
+     * 数据中台信息
+     *
+     * @param string $token
+     * @return void
+     */
+    public function entityDashboardGroups(string $token)
+    {
+        if (!is_null($this->entityDeviceGroup)) {
+            return $this->entityDashboardGroups;
+        }
+        $uri = $this->baseUri . 'entityGroups/DASHBOARD';
+        $token = $this->tokenPrefix . $token;
+        $headers = [
+            'X-Authorization' => $token
+        ];
+        $this->entityDashboardGroups = $this->handleRequestGet($uri, $headers);
+        return $this->entityDashboardGroups;
     }
 
     /**

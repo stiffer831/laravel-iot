@@ -12,12 +12,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\AssetRepo;
-use App\Repositories\CustomerRepo;
-use App\Repositories\DeviceRepo;
-use App\Services\ThingsBoardService;
-use Carbon\Carbon;
+use App\Repositories\DashboardRepo;
 use Illuminate\Http\Request;
+use App\Repositories\AssetRepo;
+use App\Repositories\DeviceRepo;
+use App\Repositories\CustomerRepo;
+use App\Services\ThingsBoardService;
 
 class DashboardController extends Controller
 {
@@ -25,6 +25,7 @@ class DashboardController extends Controller
     {
         $data['device_groups'] = $this->deviceGroups();
         $data['asset_groups'] = $this->assetGroups();
+        $data['dashboard_groups'] = $this->dashboardGroups();
         return view('page.dashboard', $data);
     }
 
@@ -52,5 +53,18 @@ class DashboardController extends Controller
         $assetGroups = (new ThingsBoardService())->entityAssetGroups($token);
         $assetGroups = (array)$assetGroups;
         return AssetRepo::handleAssetGroups($assetGroups);
+    }
+
+    /**
+     * 数据中台信息
+     *
+     * @return array
+     */
+    public function dashboardGroups(): array
+    {
+        $token = CustomerRepo::token();
+        $dashboardGroups = (new ThingsBoardService())->entityDashboardGroups($token);
+        $dashboardGroups = (array)$dashboardGroups;
+        return DashboardRepo::handleDashboardGroups($dashboardGroups);
     }
 }
