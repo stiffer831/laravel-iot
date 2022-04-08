@@ -25,6 +25,13 @@ class ThingsBoardService
     private $logger;
     private $tokenPrefix = 'Bearer ';
 
+    // 用户授权信息
+    private $authUser = null;
+    // 设备信息
+    private $entityDeviceGroup = null;
+    // 设备列表
+    private $deviceInfos = [];
+
     public function __construct()
     {
         $this->registry = Registry::getInstance();
@@ -83,6 +90,9 @@ class ThingsBoardService
      */
     public function deviceInfos(string $customerId, string $customerToken, int $pageSize = 10, int $page = 0, string $sortProperty = 'createdTime', string $sortOrder = 'DESC')
     {
+        if (isset($this->deviceInfos[$pageSize][$page][$sortProperty][$sortOrder])) {
+            return $this->deviceInfos[$pageSize][$page][$sortProperty][$sortOrder];
+        }
         $pageSize = max(1, $pageSize);
         $page = max(0, $page);
         $sortOrder = strtoupper($sortOrder);
@@ -96,18 +106,11 @@ class ThingsBoardService
         $queryString = implode("&", $queryArr);
         $uri = $this->baseUri . "customer/{$customerId}/deviceInfos?{$queryString}";
         $token = $this->tokenPrefix . $customerToken;
-
-        try {
-            $client = $this->client;
-            $response = $client->get($uri, [
-                'headers' => [
-                    'X-Authorization' => $token
-                ]
-            ]);
-            return json_decode((string)$response->getBody(), true);
-        } catch (ClientException $e) {
-            $this->handleException($e);
-        }
+        $headers = [
+            'X-Authorization' => $token
+        ];
+        $this->deviceInfos[$pageSize][$page][$sortProperty][$sortOrder] = $this->handleRequestGet($uri, $headers);
+        return $this->deviceInfos[$pageSize][$page][$sortProperty][$sortOrder];
     }
 
     /**
@@ -119,14 +122,54 @@ class ThingsBoardService
      */
     public function authUser(string $token)
     {
+        if (!is_null($this->authUser)) {
+            return $this->authUser;
+        }
+
         $uri = $this->baseUri . 'auth/user';
         $token = $this->tokenPrefix . $token;
+        $headers = [
+            'X-Authorization' => $token
+        ];
+        $this->authUser = $this->handleRequestGet($uri, $headers);
+        return $this->authUser;
+    }
+
+    /**
+     * 获取设备分组信息
+     *
+     * @param string $token
+     * @return void
+     */
+    public function entityGroupsDevice(string $token)
+    {
+        if (!is_null($this->entityDeviceGroup)) {
+            return $this->entityDeviceGroup;
+        }
+
+        $uri = $this->baseUri . 'entityGroups/DEVICE';
+        $token = $this->tokenPrefix . $token;
+        $headers = [
+            'X-Authorization' => $token
+        ];
+        $this->entityDeviceGroup = $this->handleRequestGet($uri, $headers);
+        return $this->entityDeviceGroup;
+    }
+
+    /**
+     * 发送get请求
+     *
+     * @param string $uri
+     * @param array $headers
+     *
+     * @return void
+     */
+    private function handleRequestGet(string $uri, array $headers)
+    {
         try {
             $client = $this->client;
             $response = $client->get($uri, [
-                'headers' => [
-                    'X-Authorization' => $token
-                ]
+                'headers' => $headers
             ]);
             return json_decode((string)$response->getBody(), true);
         } catch (ClientException $e) {

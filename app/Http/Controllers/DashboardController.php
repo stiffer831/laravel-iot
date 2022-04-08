@@ -12,7 +12,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\CustomerRepo;
 use App\Services\ThingsBoardService;
 use Illuminate\Http\Request;
 
