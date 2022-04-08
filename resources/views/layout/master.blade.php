@@ -60,14 +60,34 @@
 {{-- left sidebar end --}}
 {{-- content start --}}
 <div class="content-wrapper">
-  content
+  {{-- header nav and breadcrumb start --}}
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <h1 class="m-0">{{ __('nav.dashboard') }}</h1>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-left">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard v1</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{-- header nav and breadcrumb end --}}
+  {{-- main content start --}}
+  <section class="content">
+    <div class="row">
+      <div class="col-sm-12">
+        @yield('content')
+      </div>
+    </div>
+  </section>
+  {{-- main content end --}}
 </div>
 {{-- content end --}}
 {{-- footer start --}}
-<footer class="main-footer text-center">
-  <strong>Copyright &copy; 2020-{{ date('Y') }} <a href="javascript:;">瑞怡STACK</a>.</strong>
-  All rights reserved.
-</footer>
+@include('share.footer')
 {{-- footer end --}}
 </body>
 @section('footer_css')

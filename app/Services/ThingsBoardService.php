@@ -27,8 +27,10 @@ class ThingsBoardService
 
     // 用户授权信息
     private $authUser = null;
-    // 设备信息
+    // 设备分组信息
     private $entityDeviceGroup = null;
+    // 资产分组信息
+    private $entityAssetGroups = null;
     // 设备列表
     private $deviceInfos = [];
 
@@ -141,7 +143,7 @@ class ThingsBoardService
      * @param string $token
      * @return void
      */
-    public function entityGroupsDevice(string $token)
+    public function entityDeviceGroups(string $token)
     {
         if (!is_null($this->entityDeviceGroup)) {
             return $this->entityDeviceGroup;
@@ -154,6 +156,26 @@ class ThingsBoardService
         ];
         $this->entityDeviceGroup = $this->handleRequestGet($uri, $headers);
         return $this->entityDeviceGroup;
+    }
+
+    /**
+     * 获取资产分组
+     *
+     * @param string $token
+     * @return void
+     */
+    public function entityAssetGroups(string $token)
+    {
+        if (!is_null($this->entityAssetGroups)) {
+            return $this->entityAssetGroups;
+        }
+        $uri = $this->baseUri . 'entityGroups/ASSET';
+        $token = $this->tokenPrefix . $token;
+        $headers = [
+            'X-Authorization' => $token
+        ];
+        $this->entityAssetGroups = $this->handleRequestGet($uri, $headers);
+        return $this->entityAssetGroups;
     }
 
     /**

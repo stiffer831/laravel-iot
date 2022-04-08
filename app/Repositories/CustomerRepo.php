@@ -61,6 +61,17 @@ class CustomerRepo
     }
 
     /**
+     * 获取当前登录用户的token
+     *
+     * @return string
+     */
+    public static function token(): string
+    {
+        $customerInfo = customer_info();
+        return $customerInfo['token'] ?? '';
+    }
+
+    /**
      *
      * @param string $scope
      * @return array
