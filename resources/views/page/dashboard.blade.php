@@ -14,7 +14,7 @@
               <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">{{ $device_group['name'] }}</span>
-                <span class="info-box-number">{{ $device_group['createdTime'] }}</span>
+                <span class="info-box-number">{{ $device_group['createdTimeFormat'] }}</span>
               </div>
             </div>
           </div>
@@ -36,7 +36,7 @@
               <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">{{ $asset_group['name'] }}</span>
-                <span class="info-box-number">{{ $asset_group['createdTime'] }}</span>
+                <span class="info-box-number">{{ $asset_group['createdTimeFormat'] }}</span>
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
   </div>
   {{-- group asset end --}}
   {{-- group dashboard start --}}
-  <div class="card">
+  <div class="card dashboard-card">
     <div class="card-header">
       <h3 class="card-title">{{ __('th_dashboard.group_title') }}&nbsp;({{ count($dashboard_groups) }})</h3>
     </div>
@@ -58,7 +58,22 @@
               <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">{{ $dashboard_group['name'] }}</span>
-                <span class="info-box-number">{{ $dashboard_group['createdTime'] }}</span>
+                <a href="{{ route('dashboard_groups.list_info', $dashboard_group['id']['id'] ?? '') }}" class="link-item">
+                  <i class="fas fa-arrow-circle-right"></i>
+                </a>
+                <a href="javascript:;" class="link-item">
+                  <i class="fas fa-user"></i>
+                </a>
+                <a href="javascript:;" class="link-item">
+                  <i class="fas fa-share-alt"></i>
+                </a>
+                <a href="javascript:;" class="link-item">
+                  <i class="fas fa-arrow-left"></i>
+                </a>
+                <a href="javascript:;" class="link-item">
+                  <i class="fas fa-trash"></i>
+                </a>
+                <span class="info-box-number">{{ $dashboard_group['createdTimeFormat'] }}</span>
               </div>
             </div>
           </div>

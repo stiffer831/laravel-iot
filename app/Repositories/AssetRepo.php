@@ -28,6 +28,7 @@ class AssetRepo
         $result = [];
         foreach ($assetGroups as $assetGroup) {
             $createdTime = $assetGroup['createdTime'];
+            $assetGroup['createdTimeFormat'] = time_format($createdTime);
             $result[] = $assetGroup;
         }
         return $result;

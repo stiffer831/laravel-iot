@@ -15,3 +15,12 @@
   height: 2.1rem;
   line-height: 2.1rem;
 }
+
+.dashboard-card .info-box-content {
+  display: block;
+}
+
+.dashboard-card .info-box-content .link-item {
+  display: inline-block;
+  margin-right: 0.1rem;
+}

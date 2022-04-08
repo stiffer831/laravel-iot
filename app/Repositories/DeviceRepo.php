@@ -26,7 +26,7 @@ class DeviceRepo
         $result = [];
         foreach ($devices as $device) {
             $createdTime = $device['createdTime'];
-            // d($createdTime, Carbon::createFromTimestamp($createdTime)->toDateTimeString());
+            $device['createdTimeFormat'] = time_format($createdTime);
             $result[] = $device;
         }
         return $result;

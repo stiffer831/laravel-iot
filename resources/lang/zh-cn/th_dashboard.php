@@ -11,5 +11,11 @@
  */
 
 return [
-    'group_title' => '数据中台'
+    'group_title' => '数据中台',
+    'column_date_created' => '创建时间',
+    'column_title' => '标题',
+    'column_action' => '操作',
+    'btn_open' => '打开',
+    'btn_export' => '导出',
+    'btn_trash' => '删除',
 ];

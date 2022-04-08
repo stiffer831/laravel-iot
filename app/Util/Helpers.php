@@ -73,3 +73,16 @@ if (!function_exists('customer_info')) {
         return \App\Repositories\CustomerRepo::infos();
     }
 }
+
+if (!function_exists('time_format')) {
+    /**
+     * 格式化时间， 转换为本地时间字符
+     *
+     * @param int $timestamp
+     * @return string
+     */
+    function time_format(int $timestamp): string
+    {
+        return (string)$timestamp;
+    }
+}

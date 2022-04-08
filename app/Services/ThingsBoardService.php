@@ -35,6 +35,10 @@ class ThingsBoardService
     private $entityDashboardGroups = null;
     // 设备列表
     private $deviceInfos = [];
+    // 设备分组数据列表
+    private $entityGroupDashboard = [];
+    // 设备详情
+    private $entityGroupDashboardDetail = [];
 
     public function __construct()
     {
@@ -198,6 +202,64 @@ class ThingsBoardService
         ];
         $this->entityDashboardGroups = $this->handleRequestGet($uri, $headers);
         return $this->entityDashboardGroups;
+    }
+
+
+    public function entityGroupDashboard(string $token, string $entityGroupId, array $filterData = [])
+    {
+        $jsonFilter = json_encode($filterData);
+        if (isset($this->entityGroupDashboard[$token][$entityGroupId][$jsonFilter])) {
+            return $this->entityGroupDashboard[$token][$entityGroupId][$jsonFilter];
+        }
+        $page = (int)($filterData['page'] ?? 0);
+        $pageSize = (int)($filterData['pageSize'] ?? 20);
+        $sortOrder = trim((string)($filterData['sortOrder'] ?? ''));
+        $sortProperty = trim((string)($filterData['sortProperty'] ?? ''));
+        $textSearch = trim((string)($filterData['textSearch'] ?? ''));
+
+        $filter = [
+            "page={$page}",
+            "pageSize={$pageSize}"
+        ];
+        if ($sortOrder) {
+            $filter[] = "sortOrder={$sortOrder}";
+        }
+        if ($sortProperty) {
+            $filter[] = "sortProperty={$sortProperty}";
+        }
+        if ($textSearch) {
+            $filter[] = "textSearch={$textSearch}";
+        }
+        $query = implode("&", $filter);
+        $uri = $this->baseUri . "entityGroup/{$entityGroupId}/dashboards?{$query}";
+        $token = $this->tokenPrefix . $token;
+        $headers = [
+            'X-Authorization' => $token
+        ];
+        $this->entityGroupDashboard[$token][$entityGroupId][$jsonFilter] = $this->handleRequestGet($uri, $headers);
+        return $this->entityGroupDashboard[$token][$entityGroupId][$jsonFilter];
+    }
+
+    /**
+     * 获取单个数据中台详细信息
+     *
+     * @param string $token
+     * @param string $id
+     *
+     * @return void
+     */
+    public function entityGroupDashboardDetail(string $token, string $id)
+    {
+        if (isset($this->entityGroupDashboardDetail[$id])) {
+            return $this->entityGroupDashboardDetail[$id];
+        }
+        $uri = $this->baseUri . "dashboard/{$id}";
+        $token = $this->tokenPrefix . $token;
+        $headers = [
+            'X-Authorization' => $token
+        ];
+        $this->entityGroupDashboardDetail[$id] = $this->handleRequestGet($uri, $headers);
+        return $this->entityGroupDashboardDetail[$id];
     }
 
     /**
