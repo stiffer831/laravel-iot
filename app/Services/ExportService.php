@@ -12,13 +12,17 @@
 
 namespace App\Services;
 
+use App\Library\Logger;
+
 class ExportService
 {
+    private $log;
     private $data = [];
     private $fileName = '';
 
     public function __construct(array $data, string $fileName)
     {
+        $this->log = new Logger('export_service');
         $this->data = $data;
         $this->fileName = $fileName;
     }
@@ -29,11 +33,16 @@ class ExportService
      */
     public function toJson()
     {
-        // 格式化输出+中文不转码
-        $json = json_encode($this->data, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
-        $name = $this->fileName . time();
-        header("Content-disposition: attachment; filename={$name}.json");
-        header('Content-type: application/json');
-        echo $json;
+        try {
+            // 格式化输出+中文不转码
+            $json = json_encode($this->data, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+            $name = $this->fileName . time();
+            header("Content-disposition: attachment; filename={$name}.json");
+            header('Content-type: application/json');
+            echo $json;
+        } catch (\Exception $e) {
+            $this->log->error("export data to json failed.");
+            $this->log->error(var_export($e->getMessage(), true));
+        }
     }
 }
