@@ -18,4 +18,5 @@ return [
     'btn_open' => '打开',
     'btn_export' => '导出',
     'btn_trash' => '删除',
+    'no_result' => '无数据',
 ];
