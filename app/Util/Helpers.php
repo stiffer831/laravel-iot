@@ -76,7 +76,7 @@ if (!function_exists('customer_info')) {
 
 if (!function_exists('time_format')) {
     /**
-     * 格式化时间， 转换为本地时间字符
+     * 格式化时间， 毫秒级时间戳转为本地时间字符
      *
      * @param int $timestamp
      * @return string
@@ -84,5 +84,18 @@ if (!function_exists('time_format')) {
     function time_format(int $timestamp): string
     {
         return (string)date('Y-m-d H:i:s', $timestamp/1000);
+    }
+}
+
+if (!function_exists('datetime_format')) {
+    /**
+     * 格式化时间， 本地时间字符串转毫秒级时间戳
+     *
+     * @param string $datetime
+     * @return int
+     */
+    function datetime_format(string $datetime): int
+    {
+        return strtotime(\Carbon\Carbon::parse($datetime)->toDateTimeString())*1000;
     }
 }
