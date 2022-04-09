@@ -83,6 +83,6 @@ if (!function_exists('time_format')) {
      */
     function time_format(int $timestamp): string
     {
-        return (string)$timestamp;
+        return (string)date('Y-m-d H:i:s', $timestamp/1000);
     }
 }
