@@ -37,12 +37,15 @@ class DashboardGroupsController extends Controller
     /**
      * 数据中台详情
      *
+     * 调用api -> 拿到小部件数据 -> 展示
+     *
      * @param Request $request
      * @param $id
      * @return void
      */
     public function detail(Request $request, $id)
     {
+        $currentDashboard = (new ThingsBoardService())->entityGroupDashboardDetail(CustomerRepo::token(), $id);
         echo "hello, {$id}";
     }
 
